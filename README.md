@@ -179,7 +179,6 @@ class AuthService {
 }
 ```
 
-See [SERVICE-ARCHITECTURE.md](SERVICE-ARCHITECTURE.md) for detailed documentation.
 
 ## 🔐 Authentication & Authorization
 
@@ -668,9 +667,6 @@ Set these in production:
 - `tsx` - TypeScript execution
 
 ## 📖 Additional Documentation
-
-- [SERVICE-ARCHITECTURE.md](SERVICE-ARCHITECTURE.md) - Service layer patterns and examples
-- [POS-DEVELOPMENT-ROADMAP.md](POS-DEVELOPMENT-ROADMAP.md) - Full project roadmap
 - [Prisma Schema](prisma/schema.prisma) - Complete database schema
 
 ## 🤝 Contributing
