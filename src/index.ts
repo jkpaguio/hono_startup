@@ -22,10 +22,10 @@ app.doc('/api/doc', {
 })
 
 app.get('/api/swagger', swaggerUI({ url: '/api/doc' }))
-
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3000
 serve({
   fetch: app.fetch,
-  port: 3000
+  port: PORT
 }, (info) => {
   console.log(`🚀 Server running on http://localhost:${info.port}`)
   console.log(`📚 Swagger UI: http://localhost:${info.port}/api/swagger`)
