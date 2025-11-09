@@ -1,11 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -14,6 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ==================== ENUMS ====================
 
 enum Role {
   ADMIN
@@ -21,17 +19,53 @@ enum Role {
   CASHIER
 }
 
+enum ResourceType {
+  PRODUCT
+  INVENTORY
+  INVOICE
+  CUSTOMER
+  PAYMENT
+  LEDGER
+  USER
+  REPORT
+}
+
+enum Action {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  EXPORT
+  APPROVE
+}
+
+// ==================== RBAC ====================
+
+model Permission {
+  id         String       @id @default(uuid())
+  role       Role
+  resource   ResourceType
+  action     Action
+  conditions Json?        // Optional JSON conditions for fine-grained control
+  createdAt  DateTime     @default(now()) @map("created_at")
+
+  @@unique([role, resource, action])
+  @@map("permissions")
+}
+
+// ==================== USERS ====================
+
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
+  id           String    @id @default(uuid())
+  email        String    @unique
   username     String?
-  passwordHash String?  @map("password_hash")
-  role         Role     @default(CASHIER)
-  isActive     Boolean  @default(true)
-  googleId     String?  @unique @map("google_id")
-  avatarUrl    String?  @map("avatar_url")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  passwordHash String?   @map("password_hash")
+  role         Role      @default(CASHIER)
+  isActive     Boolean   @default(true) @map("is_active")
+  googleId     String?   @unique @map("google_id")
+  avatarUrl    String?   @map("avatar_url")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
 
   @@map("users")
 }

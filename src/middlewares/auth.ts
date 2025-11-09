@@ -1,11 +1,12 @@
 import { Context, Next } from 'hono'
+import { HTTPException } from 'hono/http-exception'
 import { verifyToken } from '../lib/jwt'
 
 export const authMiddleware = async (c: Context, next: Next) => {
   const authHeader = c.req.header('Authorization')
   
   if (!authHeader?.startsWith('Bearer ')) {
-    return c.json({ error: 'Unauthorized' }, 401)
+    throw new HTTPException(401, { message: 'Unauthorized' })
   }
   
   try {
@@ -17,6 +18,6 @@ export const authMiddleware = async (c: Context, next: Next) => {
     
     await next()
   } catch {
-    return c.json({ error: 'Invalid token' }, 401)
+    throw new HTTPException(401, { message: 'Invalid token' })
   }
 }
